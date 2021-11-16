@@ -9,7 +9,7 @@ def createOutputFolder(folderName):
     if not os.path.exists(folderName):
         os.makedirs(folderName)
 
-def extractSubmissions(inputFile, outputFolder):
+def unzipSubmissions(inputFile, outputFolder):
     print('Extracting from: ' + inputFile)
     createOutputFolder(outputFolder)
     with zipfile.ZipFile(inputFile, 'r') as submissions:
@@ -20,13 +20,13 @@ def extractSubmissions(inputFile, outputFolder):
             # If the file itself is a .zip file, pop it open and extract those files
             fileParts = os.path.splitext(filename)
             if fileParts[1] == '.zip':
-                zipFilename = os.path.join(outputFolder, studentName, filename)
-                # print('zip filename: ' + zipFilename)
                 submissions.extract(filename, os.path.join(outputFolder, studentName))
+                zipFilename = os.path.join(outputFolder, studentName, filename)
+                #print('zip filename: ' + zipFilename)
                 with zipfile.ZipFile(zipFilename, 'r') as internalZip:
                     for internalFile in internalZip.namelist():
-                        if (internalFile == 'LifeSimulator.java'):
-                            internalZip.extract(internalFile, os.path.join(outputFolder, studentName))
+                        #print('internal file of zip: '+internalFile)
+                        internalZip.extract(internalFile, os.path.join(outputFolder, studentName))
                 os.remove(zipFilename)
             else:
                 # Extract the file(s) for this student into the student folder
@@ -99,7 +99,8 @@ def main(argv):
         outputFolder = ''
         userid = ''
         language = ''
-        opts, args = getopt.getopt(argv, '',['infile=', 'outfolder=', 'userid=', 'language='])
+        file_ext = ''
+        opts, args = getopt.getopt(argv, '',['infile=', 'outfolder=', 'userid=', 'language=', 'file_ext='])
     except getopt.GetoptError as ex:
         print('exception: ', ex.msg)
         print('checker.py --infile <inputfile> --outfolder <outputfolder> --userid <userid> --language <language>')
@@ -116,9 +117,11 @@ def main(argv):
             userid = arg
         elif opt == '--language':
             language = arg
-    #for inputFile in inputFiles:
-    #    extractSubmissions(inputFile, outputFolder)
+        elif opt == '--file_ext':
+            file_ext = '.'+arg
+    for inputFile in inputFiles:
+        unzipSubmissions(inputFile, outputFolder)
     extract_all_source_files(outputFolder)
-    # submitSubmissions(outputFolder, userid, language)
+    submitSubmissions(outputFolder, userid, language)
 
 main(sys.argv[1:])
