@@ -35,6 +35,7 @@ def unzipSubmissions(inputFile, outputFolder):
 def submitSubmissions(outputFolder, userid, language):
     m = mosspy.Moss(userid, language)
     print('Collecting files to submit')
+    m.setDirectoryMode(1)
     for name in os.listdir(outputFolder):
         path = os.path.join(outputFolder, name)
         if os.path.isdir(path):
