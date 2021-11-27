@@ -36,7 +36,12 @@ def submitSubmissions(outputFolder, userid, language, base_file):
     m = mosspy.Moss(userid, language)
     print('Collecting files to submit')
     m.setDirectoryMode(1)
-    m.addBaseFile(base_file)
+    if base_file != '':
+        print('adding baseline file: ', base_file)
+        try:
+            m.addBaseFile(base_file)
+        except:
+            print("the setting of baseline file is not correct.")
     for name in os.listdir(outputFolder):
         path = os.path.join(outputFolder, name)
         if os.path.isdir(path):
