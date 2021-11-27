@@ -16,13 +16,19 @@ Command line requirements
 -   --language : Followed by the programming language, e.g, Python, Java
 -  --file_ext: source file extension, e.g, py, java
 
+
 If you have one .zip file, an example command line looks like…
 ```
-python checker.py --infile Assign1.zip --outfolder Assign1 --userid 12345 --language Java --file_ext java
+python checker.py --infile submissions.zip --outfolder hw --userid 12345 --language Java --file_ext java
 ```
 If you have two .zip file, an example command line looks like…
 ```
-python checker.py --infile Assign1.zip --infile Assign2.zip --outfolder Assign1 --userid 12345 --language Java --file_ext java
+python checker.py --infile submissions.zip --infile submissions2.zip --outfolder hw --userid 12345 --language Java --file_ext java
+```
+
+If you need baseline file (option -b), create a source file (like skeleton.java) at folder of checker.py, an example command line looks like…
+```
+python checker.py --infile submissions.zip --infile submissions2.zip --outfolder hw --userid 12345 --language Java --file_ext java --base skeleton.java
 ```
 
 The program unzip all the assignments, extract each student’s source file into their own folder and then submits them all to MOSS (all file would be removed other than the source file).  When it is complete, it writes a ‘report.html’ file you can open to view the results. Refer to the [Reading the Results](http://moss.stanford.edu/general/format.html) for how to interpret the results.
