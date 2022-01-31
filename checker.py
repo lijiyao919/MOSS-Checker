@@ -32,16 +32,19 @@ def unzipSubmissions(inputFile, outputFolder):
                 # Extract the file(s) for this student into the student folder
                 submissions.extract(filename, os.path.join(outputFolder, studentName))
 
-def submitSubmissions(outputFolder, userid, language, base_file):
+def submitSubmissions(outputFolder, userid, language):
     m = mosspy.Moss(userid, language)
     print('Collecting files to submit')
     m.setDirectoryMode(1)
-    if base_file != '':
-        print('adding baseline file: ', base_file)
+
+    for f in os.listdir("base"):
         try:
+            base_file = os.path.join("base", f)
+            print('adding baseline file: ', base_file)
             m.addBaseFile(base_file)
         except:
             print("the setting of baseline file is not correct.")
+            
     for name in os.listdir(outputFolder):
         path = os.path.join(outputFolder, name)
         if os.path.isdir(path):
@@ -106,17 +109,15 @@ def main(argv):
         outputFolder = ''
         userid = ''
         language = ''
-        file_ext = ''
-        base_file = ''
-        opts, args = getopt.getopt(argv, '',['infile=', 'outfolder=', 'userid=', 'language=', 'file_ext=', 'base='])
+        opts, args = getopt.getopt(argv, '',['infile=', 'outfolder=', 'userid=', 'language='])
     except getopt.GetoptError as ex:
         print('exception: ', ex.msg)
-        print('checker.py --infile <inputfile> --outfolder <outputfolder> --userid <userid> --language <language> --file_ext <ext>, --base <filename>', )
+        print('checker.py --infile <inputfile> --outfolder <outputfolder> --userid <userid> --language <language> ')
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '--help':
-            print('checker.py --infile <inputfile> --outfolder <outputfolder> --userid <userid> --language <language> --file_ext <ext>, --base <filename>')
+            print('checker.py --infile <inputfile> --outfolder <outputfolder> --userid <userid> --language <language>')
         elif opt == '--infile':
             inputFiles.append(arg)
         elif opt == '--outfolder':
@@ -125,13 +126,9 @@ def main(argv):
             userid = arg
         elif opt == '--language':
             language = arg
-        elif opt == '--file_ext':
-            file_ext = '.'+arg
-        elif opt == '--base':
-            base_file = arg
     for inputFile in inputFiles:
         unzipSubmissions(inputFile, outputFolder)
     extract_all_source_files(outputFolder)
-    submitSubmissions(outputFolder, userid, language, base_file)
+    submitSubmissions(outputFolder, userid, language)
 
 main(sys.argv[1:])
