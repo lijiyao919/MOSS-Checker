@@ -51,7 +51,12 @@ def submitSubmissions(outputFolder, userid, language):
             for filename in os.listdir(path):
                 if os.path.isfile(os.path.join(path, filename)):
                     print('adding file: ', os.path.join(path, filename))
-                    m.addFile(os.path.join(path, filename))
+                    try:
+                        m.addFile(os.path.join(path, filename))
+                    except:
+                        e = sys.exc_info()[0]
+                        print('Exception: ', e)
+
     print('Sending files to MOSS...')
     try:
         url = m.send()
