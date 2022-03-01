@@ -16,17 +16,13 @@ Command line requirements
 -   --language : Followed by the programming language, e.g, Python, Java
 -  --file_ext: source file extension, e.g, py, java
 
+If you need baseline file, create a folder named base  at the folder of checker.py, put the baseline files into it manually.
 
 If you have one .zip file, an example command line looks like…
 ```
 python checker.py --infile submissions.zip --outfolder hw --userid 12345 --language Java
 ```
 If you have two .zip file, an example command line looks like…
-```
-python checker.py --infile submissions.zip --infile submissions2.zip --outfolder hw --userid 12345 --language Java
-```
-
-If you need baseline file, add source files into base folder at the folder of checker.py, an example command line looks like (the same as previous)
 ```
 python checker.py --infile submissions.zip --infile submissions2.zip --outfolder hw --userid 12345 --language Java
 ```
